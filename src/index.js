@@ -20,6 +20,7 @@ storageInput.addEventListener('keyup', event => {
 });
 
 function isEpmty(value) {
+  //avoid empty input
   if (value == 0) {
     alert('Enter a valid value!');
     return false;
