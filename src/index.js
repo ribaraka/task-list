@@ -1,11 +1,11 @@
-const storageInput = document.querySelector('.storage');
-const list = document.getElementById('taskList');
-const button = document.querySelector('.button');
-const storedTasks = localStorage.getItem('tasks');
+const storageInput = document.querySelector('#storage');
+const list = document.querySelector('#taskList');
+const button = document.querySelector('#button');
+const storedTasks = JSON.parse(localStorage.getItem('tasks'));
+let arrTasks = storedTasks || [];
 
 if (storedTasks) {
-  const oldList = JSON.parse(storedTasks);
-  oldList.forEach(task => {
+  storedTasks.forEach(task => {
     const oldTask = document.createElement('li');
     oldTask.textContent = task;
     list.appendChild(oldTask);
@@ -19,30 +19,12 @@ storageInput.addEventListener('keyup', event => {
   }
 });
 
-function isEpmty(value) {
-  //avoid empty input
-  if (value == 0) {
-    alert('Enter a valid value!');
-    return false;
-  }
-  return true;
-}
-function sortList() {
-  const listArr = Array.from(document.querySelectorAll('li'));
-  const sortedList = listArr.map(value => value.textContent).sort();
-  sortedList.forEach((text, index) => {
-    listArr[index].textContent = text;
-  });
-  localStorage.setItem('tasks', JSON.stringify(sortedList));
-}
-
 button.addEventListener('click', () => {
-  if (!isEpmty(storageInput.value)) {
+  if (!storageInput.value.trim()) {
     return;
   }
-  const newTask = document.createElement('li');
-  newTask.textContent = storageInput.value;
-  list.appendChild(newTask);
+  arrTasks.push(storageInput.value);
+  arrTasks.sort();
   storageInput.value = null;
-  sortList();
+  localStorage.setItem('tasks', JSON.stringify(arrTasks));
 });
